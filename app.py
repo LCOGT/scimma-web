@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template, request
 
 from scimma.client.io import Stream
 
@@ -31,3 +31,4 @@ def publish():
         with Stream.open('kafka://{KAFKA_HOST}:{KAFKA_PORT}/{form.topic.data}', 'w', format='json') as s:
             s.write({'content': form.content.data})
     return render_template('publish_form.html', form=form)
+    
