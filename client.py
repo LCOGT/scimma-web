@@ -4,7 +4,6 @@ from confluent_kafka.admin import AdminClient
 
 class ScimmaClientWrapper:
     def __init__(self, *args, **opts):
-        print(opts)
         self.consumer = Consumer(opts)
         self.producer = Producer(opts)
         self.admin_client = AdminClient(opts)
