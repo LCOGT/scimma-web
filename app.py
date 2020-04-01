@@ -24,8 +24,8 @@ def index():
     """
     Returns the list of topics and number of messages per topic
     """
-    # with stream.open('kafka://localhost:9092/gcn')
-    return 'index'
+    topics = client_wrapper.topics()
+    return f'topics: {topics}'
 
 
 @app.route('/publish', methods=['GET', 'POST'])
