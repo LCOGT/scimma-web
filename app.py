@@ -4,6 +4,10 @@ from config import config
 
 
 def create_app():
+    """
+    The structure of this Flask app was taken from this wonderful blog post by Tracy Chou:
+    https://tracy.dev/how-to-mitigate-import-hell-in-flask/
+    """
     app = Flask(__name__)
     app.config.from_object(config)
     register_extensions(app)
