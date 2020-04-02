@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from flask import Flask, render_template, request
 
 from scimma.client import stream
@@ -41,17 +43,27 @@ def publish():
     return render_template('publish_form.html', form=form)
 
 
-@app.route('/topic/<str>', methods=['GET'])
-def topic(pk):
+@app.route('/topic/<id>', methods=['GET'])
+def topic(id):
     """
     Returns the messages for a specific topic
     """
-    return 'topic'
+    messages = []
+
+    # 'kafka://firkraag.lco.gtn:9092/test',
+    with stream.open(f'kafka://{KAFKA_HOST}:{KAFKA_PORT}/{id}', 'r',
+                     format='json', start_at='earliest') as s:
+        for msg in s:
+            if msg.error() in ['_PARTITION_EOF']:
+                break;
+            messages.append(msg)
+
+    return f'{len(messages)} messages found for topic: {id}: {messages}'
 
 
-@app.route('/topic/<str>/message/<id>', methods=['GET'])
-def message(pk):
+@app.route('/topic/<t_id>/message/<msg>', methods=['GET'])
+def message(t_id, msg):
     """
     Displays the content of a specific message
     """
-    return 'message'
+    return f'message ({msg}) from topic {t_id} <not-implemented>'
