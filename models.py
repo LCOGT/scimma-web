@@ -10,8 +10,8 @@ class Topic(db.Model):
     messages = db.relationship('Message', backref='topic', lazy=True)
 
     @property
-    def num_messages(self):
-        return -1
+    def message_count(self):
+        return Message.query.filter_by(topic_id=self.id).count()
 
     def serialize(self):
         return {'name': self.name, 'messages': [message.serialize() for message in self.messages]}
