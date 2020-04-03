@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from app import app
 from client import ScimmaClientWrapper
 from extensions import db
@@ -6,14 +8,15 @@ from models import Message, Topic
 
 def ingest_alert(msg):
     with app.app_context():
-        topic = db.session.query(Topic).filter_by(name=msg.topic())[0]
+        topic = db.session.query(Topic).filter_by(name=msg.topic()).first()
         if not topic:
-            topic = db.session.add(Topic(name=msg.topic()))
+            topic = Topic(name=msg.topic())
+            db.session.add(topic)
             db.session.commit()
 
         message = Message(
             content=msg.value(),
-            timestamp=msg.timestamp(),
+            timestamp=datetime.fromtimestamp(msg.timestamp()[1]/1000.0),
         )
 
         topic.messages.append(message)
@@ -23,7 +26,9 @@ def ingest_alert(msg):
 
 
 def run_ingest():
-    client = ScimmaClientWrapper(**{'bootstrap.servers': 'localhost:9092', 'group.id': 'scimma-web-test'})
+    client = ScimmaClientWrapper(**{
+        'bootstrap.servers': 'localhost:9092', 'group.id': 'scimma-web-test', 'auto.offset.reset': 'earliest'
+    })
 
     client.consumer.subscribe(client.topics())
 
