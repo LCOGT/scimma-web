@@ -4,7 +4,9 @@ from flask import Blueprint, render_template, request
 from scimma.client import stream
 
 from client import ScimmaClientWrapper
+from extensions import db
 from forms import PublishForm
+from models import Topic, Message
 
 
 KAFKA_HOST = 'localhost'
@@ -40,7 +42,10 @@ def topic_list():
     """
     Returns the list of topics and number of messages per topic
     """
-    return f'topics: {client_wrapper.topics()}'
+    context = {
+        'results': Topic.query.all()
+    }
+    return render_template('index.html', context=context)
 
 
 @routes_bp.route('/topic/<id>', methods=['GET'])
