@@ -78,7 +78,7 @@ def publish():
     The published alert goes to the Kafka stream, then ingested into the db.
     """
     form = PublishForm(request.form)
-    form.topic.choices = [(topic, topic) for topic in client_wrapper.topics()]
+    form.topic.choices = [(topic.name, topic.name) for topic in Topic.query.all()]
     if request.method == 'POST' and form.validate():
         with stream.open(f'kafka://{KAFKA_HOST}:{KAFKA_PORT}/{form.topic.data}', 'w', format='json') as s:
             s.write({'content': form.content.data})
