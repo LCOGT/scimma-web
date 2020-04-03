@@ -32,3 +32,7 @@ class Message(db.Model):
         serialized = {'id': self.id, 'timestamp': self.timestamp, 'topic': self.topic.name}
         serialized.update(json.loads(self.content))
         return serialized
+
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
