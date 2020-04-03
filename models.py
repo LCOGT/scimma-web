@@ -16,6 +16,10 @@ class Topic(db.Model):
     def serialize(self):
         return {'name': self.name, 'messages': [message.serialize() for message in self.messages]}
 
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+
 
 class Message(db.Model):
     id = db.Column(db.Integer, primary_key=True)

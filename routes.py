@@ -1,10 +1,10 @@
-from flask import Blueprint, render_template, request
+from flask import abort, Blueprint, redirect, render_template, request, url_for
 
 from scimma.client import stream
 
 from client import ScimmaClientWrapper
 # from extensions import db
-from forms import PublishForm
+from forms import CreateTopicForm, PublishForm
 from models import Message, Topic
 
 
@@ -42,6 +42,18 @@ def topic_list():
     }
     return render_template('index.html', context=context)
 
+
+@routes_bp.route('/topic/create', methods=['GET', 'POST'])
+def topic_create():
+    form = CreateTopicForm(request.form)
+    if request.method == 'POST' and form.validate():
+        try:
+            t = Topic(name=form.topic_name.data)
+            t.save()
+            return redirect(url_for('.topic_list'))
+        except Exception as e:
+            abort(500)
+    return render_template('topic_create.html', form=form)
 
 @routes_bp.route('/topic/<int:topic_id>', methods=['GET'])
 def topic_get(topic_id):
