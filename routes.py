@@ -3,7 +3,9 @@ from flask import Blueprint, render_template, request
 from scimma.client import stream
 
 from client import ScimmaClientWrapper
+from extensions import db
 from forms import PublishForm
+from models import Message, Topic
 
 
 KAFKA_HOST = 'localhost'
@@ -23,12 +25,14 @@ routes_bp = Blueprint('', 'routes')
 
 @routes_bp.route('/', methods=['GET'])
 def index():
-    messages = []
-    topics = client_wrapper.topics()
-    return 'index'
+    """
+    Returns all messages
+    """
+    messages = Message.query.all()
+    return {'messages': [message.serialize() for message in messages]}
 
 
-@routes_bp.route('/topic', methods=['GET'])
+@routes_bp.route('/topic/list', methods=['GET'])
 def topic_list():
     """
     Returns the list of topics and number of messages per topic
@@ -67,11 +71,11 @@ def publish():
     return render_template('publish_form.html', form=form)
 
 
-@routes_bp.route('/message/<int:id>', methods=['GET'])
+@routes_bp.route('/message/<int:msg_id>', methods=['GET'])
 def message(msg_id):
     """
     Displays the content of a specific message
     """
-    topic = request.args.get('topic')
+    message = Message.query.get(msg_id)
 
-    return f'message ({msg}) from topic {topic} <not-implemented>'
+    return message.serialize()
