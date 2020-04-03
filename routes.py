@@ -1,4 +1,3 @@
-from datetime import datetime
 
 from flask import Blueprint, render_template, request
 
@@ -47,7 +46,7 @@ def topic_list():
 @routes_bp.route('/topic/<id>', methods=['GET'])
 def topic_get(id):
     """
-    Returns the messages for a specific topic
+    Returns from the database the messages for a specific topic
     """
     messages = []
 
@@ -64,6 +63,7 @@ def topic_get(id):
 def publish():
     """
     Allows a user to publish an alert to the given topic
+    The published alert goes to the Kafka stream, then ingested into the db.
     """
     form = PublishForm(request.form)
     form.topic.choices = [(topic, topic) for topic in client_wrapper.topics()]
