@@ -33,14 +33,7 @@ def index():
     #         client_wrapper.consumer.
     #     print(client_wrapper.current_messages(topic))
 
-    response = {
-        'topics': topics,
-        'latest': {'walltime': datetime.utcnow()},
-    }
-
-    #return render_template('index.html', context=response) # , page=paginator.page, arg_str=arg_str, latest=latest)
-
-    return 'index'
+    return render_template('base.html')
 
 
 @routes_bp.route('/topic', methods=['GET'])
