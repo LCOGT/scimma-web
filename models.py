@@ -7,6 +7,10 @@ class Topic(db.Model):
     name = db.Column(db.String(80), unique=True, nullable=False)
     messages = db.relationship('Message', backref='topic', lazy=True)
 
+    @property
+    def num_messages(self):
+        return -1
+
 
 class Message(db.Model):
     id = db.Column(db.Integer, primary_key=True)
