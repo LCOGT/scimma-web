@@ -1,12 +1,11 @@
-
 from flask import Blueprint, render_template, request
 
 from scimma.client import stream
 
 from client import ScimmaClientWrapper
-from extensions import db
+# from extensions import db
 from forms import PublishForm
-from models import Topic, Message
+from models import Message, Topic
 
 
 KAFKA_HOST = 'localhost'
@@ -26,18 +25,14 @@ routes_bp = Blueprint('', 'routes')
 
 @routes_bp.route('/', methods=['GET'])
 def index():
-    messages = []
-    topics = client_wrapper.topics()
-
-    # for topic, topic_metadata in client_wrapper.topics():
-    #     for partition, _ in metadata.partitions.items():
-    #         client_wrapper.consumer.
-    #     print(client_wrapper.current_messages(topic))
-
-    return render_template('base.html')
+    """
+    Returns all messages
+    """
+    messages = Message.query.all()
+    return {'messages': [message.serialize() for message in messages]}
 
 
-@routes_bp.route('/topic', methods=['GET'])
+@routes_bp.route('/topic/list', methods=['GET'])
 def topic_list():
     """
     Returns the list of topics and number of messages per topic
@@ -48,8 +43,8 @@ def topic_list():
     return render_template('index.html', context=context)
 
 
-@routes_bp.route('/topic/<id>', methods=['GET'])
-def topic_get(id):
+@routes_bp.route('/topic/<int:topic_id>', methods=['GET'])
+def topic_get(topic_id):
     """
     Returns from the database the messages for a specific topic
     """
@@ -61,7 +56,7 @@ def topic_get(id):
         for msg in s:
             messages.append(msg)
 
-    return f'{len(messages)} messages found for topic: {id}: {messages}'
+    return f'{len(messages)} messages found for topic: {topic_id}: {messages}'
 
 
 @routes_bp.route('/message/create', methods=['GET', 'POST'])
@@ -78,11 +73,11 @@ def publish():
     return render_template('publish_form.html', form=form)
 
 
-@routes_bp.route('/message/<int:id>', methods=['GET'])
-def message(msg_id):
+@routes_bp.route('/message/<int:msg_id>', methods=['GET'])
+def message_get(msg_id):
     """
     Displays the content of a specific message
     """
-    topic = request.args.get('topic')
+    message = Message.query.get(msg_id)
 
-    return f'message ({msg_id}) from topic {topic} <not-implemented>'
+    return message.serialize()
