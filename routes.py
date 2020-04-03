@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from flask import Blueprint, render_template, request
 
 from scimma.client import stream
@@ -31,7 +33,13 @@ def index():
     #     for partition, _ in metadata.partitions.items():
     #         client_wrapper.consumer.
     #     print(client_wrapper.current_messages(topic))
-    return 'index'
+
+    response = {
+        'latest': {'walltime': datetime.utcnow()}
+
+    }
+
+    return render_template('index.html', context=response) # , page=paginator.page, arg_str=arg_str, latest=latest)
 
 
 @routes_bp.route('/topic', methods=['GET'])
@@ -39,7 +47,7 @@ def topic_list():
     """
     Returns the list of topics and number of messages per topic
     """
-    topics = [topic for topics, metadata in client_wrapper.topics()]
+    topics = [topic for topic, metadata in client_wrapper.topics()]
     return f'topics: {topics}'
 
 
@@ -54,8 +62,6 @@ def topic_get(id):
     with stream.open(f'kafka://{KAFKA_HOST}:{KAFKA_PORT}/{id}', 'r',
                      format='json', start_at='earliest') as s:
         for msg in s:
-            if msg.error() in ['_PARTITION_EOF']:
-                break;
             messages.append(msg)
 
     return f'{len(messages)} messages found for topic: {id}: {messages}'

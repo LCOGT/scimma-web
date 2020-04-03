@@ -1,0 +1,29 @@
+  <div class="col-md-10">
+    <div class="table-responsive">
+      <div class="row">
+        <div class="col-md-4">
+          <span class="text-right">Latest Alert: {{ latest.wall_time.strftime('%Y-%m-%d %H:%M:%S') }} UTC</span>
+        </div>
+      </div>
+      <table class="table table-striped table-sm">
+        <thead>
+          <tr>
+            <th>topic</th>
+            <th>messages</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for topic in context.results %}
+          <tr>
+              <!--
+            <td><a href="/{{ alert.lco_id }}/" title="{{ alert.lco_id }}">{{ alert.lco_id }}</a></td>
+            -->
+              <td>{{ topic.topic }}</td>
+              <td>{{ topic.num_messages }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
