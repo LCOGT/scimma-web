@@ -9,4 +9,15 @@ class ScimmaClientWrapper:
         self.admin_client = AdminClient(kwargs)
 
     def topics(self):
-        return [topic_name for topic_name, topic_metadata in self.admin_client.list_topics().topics.items()]
+        metadata = [topic_metadata for topic_name, topic_metadata in self.admin_client.list_topics().topics.items()]
+        for md in metadata:
+            print(metadata)
+        return self.admin_client.list_topics().topics.items()
+
+    def current_messages(self, topic):
+        msg = self.consumer.consume(num_messages=1)
+        while True:
+            msg = self.consumer.poll(1)
+            if msg:
+                print(msg.error())
+                break
