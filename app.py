@@ -16,12 +16,11 @@ def create_app():
 
 
 def register_extensions(app):
-    from extensions import db
+    from extensions import db, migrate
+    from models import Message, Topic
 
     db.init_app(app)
-
-    with app.app_context():
-        db.create_all()
+    migrate.init_app(app, db)
 
 
 def register_blueprints(app):
