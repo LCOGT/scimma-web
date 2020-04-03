@@ -17,6 +17,7 @@ def create_app():
 
 def register_extensions(app):
     from extensions import db, migrate
+    from models import Message, Topic
 
     db.init_app(app)
     migrate.init_app(app, db)
