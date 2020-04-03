@@ -10,7 +10,6 @@ KAFKA_HOST = 'localhost'
 # KAFKA_HOST = 'firkraag.lco.gtn'
 KAFKA_PORT = '9092'
 
-
 kafka_config = {
     'bootstrap.servers': f'{KAFKA_HOST}:{KAFKA_PORT}',
     'group.id': 'scimma-web-test',
@@ -19,7 +18,6 @@ kafka_config = {
 
 client_wrapper = ScimmaClientWrapper(**kafka_config)
 
-
 routes_bp = Blueprint('', 'routes')
 
 
@@ -27,10 +25,6 @@ routes_bp = Blueprint('', 'routes')
 def index():
     messages = []
     topics = client_wrapper.topics()
-    # for topic, topic_metadata in client_wrapper.topics():
-    #     for partition, _ in metadata.partitions.items():
-    #         client_wrapper.consumer.
-    #     print(client_wrapper.current_messages(topic))
     return 'index'
 
 
@@ -39,8 +33,7 @@ def topic_list():
     """
     Returns the list of topics and number of messages per topic
     """
-    topics = [topic for topics, metadata in client_wrapper.topics()]
-    return f'topics: {topics}'
+    return f'topics: {client_wrapper.topics()}'
 
 
 @routes_bp.route('/topic/<id>', methods=['GET'])
@@ -74,7 +67,7 @@ def publish():
     return render_template('publish_form.html', form=form)
 
 
-@routes_bp.route('/message/<id>', methods=['GET'])
+@routes_bp.route('/message/<int:id>', methods=['GET'])
 def message(msg_id):
     """
     Displays the content of a specific message

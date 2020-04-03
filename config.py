@@ -1,4 +1,4 @@
 class Config:
-    pass
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///sw.db'
 
 config = Config

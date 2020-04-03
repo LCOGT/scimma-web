@@ -2,3 +2,4 @@ flask==1.1.1
 wtforms==2.2.1
 scimma-client==0.0.4a4
 flask-sqlalchemy==2.4.1
+flask-migrate==2.5.3
