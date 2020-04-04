@@ -60,15 +60,11 @@ def topic_get(topic_id):
     """
     Returns from the database the messages for a specific topic
     """
-    messages = []
 
-    # 'kafka://firkraag.lco.gtn:9092/test',
-    with stream.open(f'kafka://{KAFKA_HOST}:{KAFKA_PORT}/{id}', 'r',
-                     format='json', start_at='earliest') as s:
-        for msg in s:
-            messages.append(msg)
-
-    return f'{len(messages)} messages found for topic: {topic_id}: {messages}'
+    context = {
+        'results': [message for message in Message.query.filter_by(topic_id=topic_id).all()]
+    }
+    return render_template('message_index.html', context=context)
 
 
 @routes_bp.route('/message/create', methods=['GET', 'POST'])
