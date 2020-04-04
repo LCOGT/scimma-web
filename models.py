@@ -9,6 +9,9 @@ class Topic(db.Model):
     name = db.Column(db.String(80), unique=True, nullable=False)
     messages = db.relationship('Message', backref='topic', lazy=True)
 
+    def __str__(self):
+        return self.name
+
     @property
     def message_count(self):
         return Message.query.filter_by(topic_id=self.id).count()
