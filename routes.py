@@ -40,7 +40,7 @@ def topic_list():
     context = {
         'results': Topic.query.all()
     }
-    return render_template('index.html', context=context)
+    return render_template('topic_index.html', context=context)
 
 
 @routes_bp.route('/topic/create', methods=['GET', 'POST'])
