@@ -3,6 +3,15 @@ from flask import Flask
 from config import config
 
 
+"""
+Update template hrefs to use url_for instead of relative pathing
+Add a set of API endpoints
+Remove LCO-specific text from the format
+Properly format any message JSON
+Implement message detail page
+"""
+
+
 def create_app():
     """
     The structure of this Flask app was taken from this wonderful blog post by Tracy Chou:

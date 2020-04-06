@@ -13,7 +13,7 @@
         <tbody>
           {% for topic in context.results %}
           <tr>
-            <td><a href="/topic/{{ topic.id }}">{{ topic.name }}</a></td>
+            <td><a href="{{ url_for('.topic_get', topic_id=topic.id) }}">{{ topic.name }}</a></td>
               <td>{{ topic.message_count }}</td>
             <td>{{ topic.message_count }}</td>
           </tr>
