@@ -6,17 +6,16 @@
         <thead>
           <tr>
             <th>topic</th>
-            <th>messages</th>
+            <th>event messages</th>
+            <th>latest</th>
           </tr>
         </thead>
         <tbody>
           {% for topic in context.results %}
           <tr>
-              <!--
-              {# <td><a href="/{{ alert.lco_id }}/" title="{{ alert.lco_id }}">{{ alert.lco_id }}</a></td> #}
-            -->
-              <td>{{ topic.name }}</td>
+            <td><a href="/topic/{{ topic.id }}">{{ topic.name }}</a></td>
               <td>{{ topic.message_count }}</td>
+            <td>{{ topic.message_count }}</td>
           </tr>
           {% endfor %}
         </tbody>
