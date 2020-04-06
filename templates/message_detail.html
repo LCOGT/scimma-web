@@ -1,7 +1,27 @@
 {% extends "base.html" %}
 {% block content %}
   <div class="col-md-10">
-      <p>{{ context.message.id }}</p>
-      <p>{{ context.message.content }}</p>
+      <p>The SCiMMA message content is still in the definition stage.</p>
+      <p>For the time being here are the message attributes:</p>
+  </div>
+  <div class="col-md-10">
+    <div class="table-responsive">
+      <table class="table table-striped table-sm">
+        <thead>
+        <tr>
+            <th>Attribute</th>
+            <th>Value</th>
+        </tr>
+        </thead>
+          <tbody>
+          {% for attr, value in context.message.__dict__.items() %}
+          <tr>
+              <td>{{ attr }}</td>
+              <td>{{ value }}</td>
+          </tr>
+          {% endfor %}
+          </tbody>
+      </table>
+    </div>
   </div>
 {% endblock content %}
