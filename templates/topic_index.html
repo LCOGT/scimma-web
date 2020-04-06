@@ -14,8 +14,12 @@
           {% for topic in context.results %}
           <tr>
             <td><a href="{{ url_for('.topic_get', topic_id=topic.id) }}">{{ topic.name }}</a></td>
-              <td>{{ topic.message_count }}</td>
             <td>{{ topic.message_count }}</td>
+            {% if topic.message_count != 0 %}
+            <td><a href="{{ url_for('.message_get', msg_id=topic.latest_message.id) }}">{{ topic.latest_message.timestamp }}</a></td>
+            {% else %}
+            <td>no messages</td>
+            {% endif %}
           </tr>
           {% endfor %}
         </tbody>
