@@ -96,6 +96,9 @@ def message_get(msg_id):
     """
     Displays the content of a specific message
     """
-    message = Message.query.get(msg_id)
+    context = {
+        'message': Message.query.get(msg_id)
+    }
 
-    return message.serialize()
+    return render_template('message_detail.html', context=context)
+

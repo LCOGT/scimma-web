@@ -14,7 +14,7 @@
         <tbody>
           {% for message in context.results %}
           <tr>
-              <td>{{ message.id }}</td>
+              <td><a href="/message/{{ message.id }}">{{ message.id }}</a></td>
               <td>{{ message.topic }}</td>
               <td>{{ message.content }}</td>
               <td>{{ message.timestamp }}</td>
