@@ -14,9 +14,6 @@
         <tbody>
           {% for message in context.results %}
           <tr>
-              <!--
-              {# <td><a href="/{{ alert.lco_id }}/" title="{{ alert.lco_id }}">{{ alert.lco_id }}</a></td> #}
-            -->
               <td>{{ message.id }}</td>
               <td>{{ message.topic }}</td>
               <td>{{ message.content }}</td>
