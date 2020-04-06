@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="col-md-10">
+    This is <a href="/" class="text-dark">SCiMMA-web</a>.
+    It demonstrates the use of the <a href="https://scimma.org">SCiMMA</a> Hopskotch
+    client library (<a href="https://github.com/scimma/client_library">source</a>).
+  </div>
+  <hr>
+  <div class="col-md-10">
+    Here, you can add topics and event messages:
+    <ul>
+      <li><a href="/topic/create">Create</a> a topic.</li>
+      <li><a href="/message/create">Publish</a> an event message to the SCiMMa server.</li>
+    </ul>
+  </div>
+  <div class="col-md-10">
+    You can also list topics and event messages:
+    <ul>
+      <li><a href="/topic/list">List</a> the topics on SCiMMa server. From the list of topics, you can show its event messages.</li>
+      <li><a href="/message">List</a> all the event messages.</li>
+      <li>See details of a given event message from the link on its topic page.</li>
+    </ul>
+  </div>
+
+{% endblock content %}

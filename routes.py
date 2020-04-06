@@ -26,10 +26,9 @@ routes_bp = Blueprint('', 'routes')
 @routes_bp.route('/', methods=['GET'])
 def index():
     """
-    Returns all messages
+    Presents a brief intro and site map.
     """
-    messages = Message.query.all()
-    return {'messages': [message.serialize() for message in messages]}
+    return render_template('home.html')
 
 
 @routes_bp.route('/topic/list', methods=['GET'])
@@ -63,6 +62,17 @@ def topic_get(topic_id):
 
     context = {
         'results': [message for message in Message.query.filter_by(topic_id=topic_id).all()]
+    }
+    return render_template('message_index.html', context=context)
+
+
+@routes_bp.route('/message/', methods=['GET'])
+def message():
+    """
+    Returns a list of all messages
+    """
+    context = {
+        'results': Message.query.all()
     }
     return render_template('message_index.html', context=context)
 
