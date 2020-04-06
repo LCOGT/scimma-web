@@ -16,6 +16,11 @@ class Topic(db.Model):
     def message_count(self):
         return Message.query.filter_by(topic_id=self.id).count()
 
+    @property
+    def latest_message(self):
+        return db.session.query(Message).filter_by(topic_id=self.id).\
+            order_by(Message.timestamp.desc()).first()
+
     def serialize(self):
         return {'name': self.name, 'messages': [message.serialize() for message in self.messages]}
 
