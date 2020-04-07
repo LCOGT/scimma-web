@@ -32,10 +32,10 @@ def run_ingest():
         'bootstrap.servers': 'localhost:9092', 'group.id': 'scimma-web-test', 'auto.offset.reset': 'earliest'
     })
 
-    client.consumer.subscribe(client.topics())
 
     while True:
         print('polling')
+        client.consumer.subscribe(client.topics())
         msg = client.consumer.poll(5)
         if msg is None:
             continue
