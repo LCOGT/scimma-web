@@ -1,0 +1,11 @@
+GCN CIRCULAR
+
+27506
+
+IPN triangulation of GRB 200407A
+
+Anna Ridnaia
+
+We have triangulated it to a GBM-INTEGRAL annulus centered at
+RA(2000)=217.298 deg (14h 29m 12s)  Dec(2000)=+55.704 deg (+55d 42' 15"),
+whose radius is 66.821 +/- 4.108 deg (3 sigma).
