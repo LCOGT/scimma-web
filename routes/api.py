@@ -68,6 +68,6 @@ def topic_update(topic_id):
     abort(501)
 
 
-@api_bp.route('/api/topic/<inttopicg_id>', methods=['DELETE'])
+@api_bp.route('/api/topic/<int:topic_id>', methods=['DELETE'])
 def topic_delete(topic_id):
     abort(501)
