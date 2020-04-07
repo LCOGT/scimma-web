@@ -44,9 +44,9 @@ class Message(db.Model):
     @property
     def url(self):
         number = json.loads(self.content).get('number')
-        if self.topic.name == 'gcn':
+        if self.topic.name.lower() == 'gcn':
             return f'https://gcn.gsfc.nasa.gov/gcn/gcn3/{number}.gcn3'
-        elif self.topic.name == 'atel':
+        elif self.topic.name.lower() == 'atel':
             return f'http://astronomerstelegram.org/?read={number}'
         return ''
 
