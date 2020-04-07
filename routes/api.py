@@ -20,54 +20,54 @@ kafka_config = {
 
 client_wrapper = ScimmaClientWrapper(**kafka_config)
 
-api_bp = Blueprint('', 'api')
+api_bp = Blueprint('api', 'api')
 
 
-@api_bp.route('/message',  methods=['GET'])
+@api_bp.route('/api/message',  methods=['GET'])
 def message_list():
-    pass
+    return {'messages': [message.serialize() for message in Message.query.all()]}
 
 
-@api_bp.route('/message/create', methods=['POST'])
+@api_bp.route('/api/message', methods=['POST'])
 def message_create():
-    pass
+    abort(501)
 
 
-@api_bp.route('/message/get', methods=['GET'])
-def message_get():
-    pass
+@api_bp.route('/api/message/<int:msg_id>', methods=['GET'])
+def message_get(msg_id):
+    return Message.query.get(msg_id).serialize()
 
 
-@api_bp.route('/message/update', methods=['POST'])
-def message_update():
-    pass
+@api_bp.route('/api/message/<int:msg_id>', methods=['POST'])
+def message_update(msg_id):
+    abort(501)
 
 
-@api_bp.route('/message/delete', methods=['DELETE'])
-def message_delete():
-    pass
+@api_bp.route('/api/message/<int:msg_id>', methods=['DELETE'])
+def message_delete(msg_id):
+    abort(501)
 
 
-@api_bp.route('/topic',  methods=['GET'])
+@api_bp.route('/api/topic',  methods=['GET'])
 def topic_list():
-    pass
+    return {'topics': [topic.serialize() for topic in Topic.query.all()]}
 
 
-@api_bp.route('/topic/create', methods=['POST'])
+@api_bp.route('/api/topic', methods=['POST'])
 def topic_create():
-    pass
+    abort(501)
 
 
-@api_bp.route('/topic/get', methods=['GET'])
-def topic_get():
-    pass
+@api_bp.route('/api/topic/<int:topic_id>', methods=['GET'])
+def topic_get(topic_id):
+    return Topic.query.get(topic_id).serialize()
 
 
-@api_bp.route('/topic/update', methods=['POST'])
-def topic_update():
-    pass
+@api_bp.route('/api/topic/<int:topic_id>', methods=['POST'])
+def topic_update(topic_id):
+    abort(501)
 
 
-@api_bp.route('/topic/delete', methods=['DELETE'])
-def topic_delete():
-    pass
+@api_bp.route('/api/topic/<inttopicg_id>', methods=['DELETE'])
+def topic_delete(topic_id):
+    abort(501)
