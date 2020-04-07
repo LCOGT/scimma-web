@@ -33,9 +33,9 @@ def register_extensions(app):
 
 
 def register_blueprints(app):
-    from routes import routes_bp
+    from routes.web import web_bp
 
-    app.register_blueprint(routes_bp)
+    app.register_blueprint(web_bp)
 
 
 app = create_app()
