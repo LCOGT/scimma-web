@@ -1,5 +1,6 @@
-from flask import abort, Blueprint, redirect, render_template, request, url_for
+import json
 
+from flask import abort, Blueprint, redirect, render_template, request, url_for
 from scimma.client import stream
 
 from client import ScimmaClientWrapper
@@ -20,19 +21,19 @@ kafka_config = {
 
 client_wrapper = ScimmaClientWrapper(**kafka_config)
 
-routes_bp = Blueprint('', 'routes')
+web_bp = Blueprint('', 'web')
 
 
-@routes_bp.route('/', methods=['GET'])
-def index():
+@web_bp.route('/', methods=['GET'])
+def home():
     """
     Presents a brief intro and site map.
     """
     return render_template('home.html')
 
 
-@routes_bp.route('/topic/list', methods=['GET'])
-def topic_list():
+@web_bp.route('/topic/list', methods=['GET'])
+def list_topics():
     """
     Returns the list of topics and number of messages per topic
     """
@@ -42,20 +43,20 @@ def topic_list():
     return render_template('topic_index.html', context=context)
 
 
-@routes_bp.route('/topic/create', methods=['GET', 'POST'])
-def topic_create():
+@web_bp.route('/topic/create', methods=['GET', 'POST'])
+def create_topic():
     form = CreateTopicForm(request.form)
     if request.method == 'POST' and form.validate():
         try:
             t = Topic(name=form.topic_name.data)
             t.save()
-            return redirect(url_for('.topic_list'))
+            return redirect(url_for('.list_topics'))
         except Exception as e:
             abort(500)
     return render_template('topic_create.html', form=form)
 
-@routes_bp.route('/topic/<int:topic_id>', methods=['GET'])
-def topic_get(topic_id):
+@web_bp.route('/topic/<int:topic_id>', methods=['GET'])
+def get_topic(topic_id):
     """
     Returns from the database the messages for a specific topic
     """
@@ -66,8 +67,8 @@ def topic_get(topic_id):
     return render_template('message_index.html', context=context)
 
 
-@routes_bp.route('/message/', methods=['GET'])
-def message():
+@web_bp.route('/message/', methods=['GET'])
+def list_messages():
     """
     Returns a list of all messages
     """
@@ -77,22 +78,30 @@ def message():
     return render_template('message_index.html', context=context)
 
 
-@routes_bp.route('/message/create', methods=['GET', 'POST'])
-def publish():
+@web_bp.route('/message/create', methods=['GET', 'POST'])
+def publish_message():
     """
     Allows a user to publish an alert to the given topic
     The published alert goes to the Kafka stream, then ingested into the db.
     """
     form = PublishForm(request.form)
     form.topic.choices = [(topic.name, topic.name) for topic in Topic.query.all()]
+    message = {
+        'title': form.title.data,
+        'number': form.number.data,
+        'subject': form.subject.data,
+        'publisher': form.publisher.data,
+        'content': form.content.data
+    }
     if request.method == 'POST' and form.validate():
         with stream.open(f'kafka://{KAFKA_HOST}:{KAFKA_PORT}/{form.topic.data}', 'w', format='json') as s:
-            s.write({'content': form.content.data})
+            s.write(message)
+        return redirect(url_for('.list_messages'))
     return render_template('publish_form.html', form=form)
 
 
-@routes_bp.route('/message/<int:msg_id>', methods=['GET'])
-def message_get(msg_id):
+@web_bp.route('/message/<int:msg_id>', methods=['GET'])
+def get_message(msg_id):
     """
     Displays the content of a specific message
     """
@@ -101,4 +110,3 @@ def message_get(msg_id):
     }
 
     return render_template('message_detail.html', context=context)
-

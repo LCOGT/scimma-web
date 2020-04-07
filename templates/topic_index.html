@@ -1,29 +1,30 @@
 {% extends "base.html" %}
 {% block content %}
-  <div class="col-md-10">
-    <div class="table-responsive">
-      <table class="table table-striped table-sm">
-        <thead>
-          <tr>
-            <th>topic</th>
-            <th>event messages</th>
-            <th>latest</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for topic in context.results %}
-          <tr>
-            <td><a href="{{ url_for('.topic_get', topic_id=topic.id) }}">{{ topic.name }}</a></td>
-            <td>{{ topic.message_count }}</td>
-            {% if topic.message_count != 0 %}
-            <td><a href="{{ url_for('.message_get', msg_id=topic.latest_message.id) }}">{{ topic.latest_message.timestamp }}</a></td>
-            {% else %}
-            <td>no messages</td>
-            {% endif %}
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
+<div class="col-md-10">
+  <h3>Topics</h3>
+  <div class="table-responsive">
+    <table class="table table-striped table-sm">
+      <thead>
+      <tr>
+        <th>topic</th>
+        <th>event messages</th>
+        <th>latest</th>
+      </tr>
+      </thead>
+      <tbody>
+      {% for topic in context.results %}
+      <tr>
+        <td><a href="{{ url_for('.get_topic', topic_id=topic.id) }}">{{ topic.name }}</a></td>
+        <td>{{ topic.message_count }}</td>
+        {% if topic.message_count != 0 %}
+        <td><a href="{{ url_for('.get_message', msg_id=topic.latest_message.id) }}">{{ topic.latest_message.timestamp }}</a></td>
+        {% else %}
+        <td>no messages</td>
+        {% endif %}
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
   </div>
+</div>
 {% endblock content %}
