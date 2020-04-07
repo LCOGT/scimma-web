@@ -1,4 +1,5 @@
 from datetime import datetime
+import json
 
 from app import app
 from client import ScimmaClientWrapper
@@ -7,6 +8,7 @@ from models import Message, Topic
 
 
 def ingest_alert(msg):
+    print('ingesting alert')
     with app.app_context():
         topic = db.session.query(Topic).filter_by(name=msg.topic()).first()
         if not topic:
@@ -15,7 +17,7 @@ def ingest_alert(msg):
             db.session.commit()
 
         message = Message(
-            content=msg.value(),
+            content=msg.value().decode('utf-8'),
             timestamp=datetime.fromtimestamp(msg.timestamp()[1]/1000.0),
         )
 
@@ -30,10 +32,11 @@ def run_ingest():
         'bootstrap.servers': 'localhost:9092', 'group.id': 'scimma-web-test', 'auto.offset.reset': 'earliest'
     })
 
-    client.consumer.subscribe(client.topics())
 
     while True:
-        msg = client.consumer.poll(1)
+        print('polling')
+        client.consumer.subscribe(client.topics())
+        msg = client.consumer.poll(5)
         if msg is None:
             continue
         if msg.error():

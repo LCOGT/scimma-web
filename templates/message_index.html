@@ -10,15 +10,17 @@
         <th>topic</th>
         <th>content</th>
         <th>timestamp</th>
+        <th>original</th>
       </tr>
       </thead>
       <tbody>
       {% for message in context.results %}
       <tr>
-        <td><a href="/message/{{ message.id }}">{{ message.id }}</a></td>
+        <td><a href="{{ url_for('.get_message', msg_id=message.id) }}">{{ message.id }}</a></td>
         <td>{{ message.topic }}</td>
         <td>{{ message.content }}</td>
         <td>{{ message.timestamp }}</td>
+        <td><a href="{{ message.url }}">View Original</a></td>
       </tr>
       {% endfor %}
       </tbody>

@@ -9,15 +9,15 @@
   <div class="col-md-10">
     Here, you can add topics and event messages:
     <ul>
-      <li><a href="{{ url_for('.topic_create') }}">Create</a> a topic.</li>
-      <li><a href="{{ url_for('.publish') }}">Publish</a> an event message to the SCiMMa server.</li>
+      <li><a href="{{ url_for('.create_topic') }}">Create</a> a topic.</li>
+      <li><a href="{{ url_for('.publish_message') }}">Publish</a> an event message to the SCiMMa server.</li>
     </ul>
   </div>
   <div class="col-md-10">
     You can also list topics and event messages:
     <ul>
-      <li><a href="{{ url_for('.topic_list') }}">List</a> the topics on SCiMMa server. From the list of topics, you can show its event messages.</li>
-      <li><a href="{{ url_for('.message') }}">List</a> all the event messages.</li>
+      <li><a href="{{ url_for('.list_topics') }}">List</a> the topics on SCiMMa server. From the list of topics, you can show its event messages.</li>
+      <li><a href="{{ url_for('.list_messages') }}">List</a> all the event messages.</li>
       <li>See details of a given event message from the link on its topic page.</li>
     </ul>
   </div>

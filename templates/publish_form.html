@@ -1,11 +1,16 @@
 {% extends "base.html" %}
+{% from "_formhelpers.html" import render_field %}
 {% block content %}
 <div class="col-md-10">
     <h3>Publish Event</h3>
     <form action="" method="post">
-        <div>{{ form.content.label }}: {{ form.content }}</div>
-        <div>{{ form.topic.label }}: {{ form.topic }}</div>
-        <div>{{ form.submit }}</div>
+        {{ render_field(form.title) }}
+        {{ render_field(form.number) }}
+        {{ render_field(form.subject) }}
+        {{ render_field(form.publisher) }}
+        {{ render_field(form.content) }}
+        {{ render_field(form.topic) }}
+        {{ render_field(form.submit) }}
     </form>
 </div>
 {% endblock content %}
