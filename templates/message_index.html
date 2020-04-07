@@ -10,6 +10,7 @@
         <th>topic</th>
         <th>content</th>
         <th>timestamp</th>
+        <th>original</th>
       </tr>
       </thead>
       <tbody>
@@ -19,6 +20,7 @@
         <td>{{ message.topic }}</td>
         <td>{{ message.content }}</td>
         <td>{{ message.timestamp }}</td>
+        <td><a href="{{ message.url }}">View Original</a></td>
       </tr>
       {% endfor %}
       </tbody>

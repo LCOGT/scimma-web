@@ -32,7 +32,7 @@ class Topic(db.Model):
 class Message(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     topic_id = db.Column(db.Integer, db.ForeignKey('topic.id'), nullable=False)
-    content = db.Column(db.String(256), nullable=False)
+    content = db.Column(db.String(2048), nullable=False)
     timestamp = db.Column(db.DateTime, unique=False, nullable=False)
     ingestion_time = db.Column(db.DateTime, unique=False, nullable=False, default=datetime.now)
 
@@ -40,6 +40,15 @@ class Message(db.Model):
         serialized = {'id': self.id, 'timestamp': self.timestamp, 'topic': self.topic.name}
         serialized.update(json.loads(self.content))
         return serialized
+
+    @property
+    def url(self):
+        number = json.loads(self.content).get('number')
+        if self.topic.name == 'gcn':
+            return f'https://gcn.gsfc.nasa.gov/gcn/gcn3/{number}.gcn3'
+        elif self.topic.name == 'atel':
+            return f'http://astronomerstelegram.org/?read={number}'
+        return ''
 
     def save(self):
         db.session.add(self)

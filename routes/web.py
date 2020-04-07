@@ -1,5 +1,6 @@
-from flask import abort, Blueprint, redirect, render_template, request, url_for
+import json
 
+from flask import abort, Blueprint, redirect, render_template, request, url_for
 from scimma.client import stream
 
 from client import ScimmaClientWrapper
@@ -85,9 +86,16 @@ def publish_message():
     """
     form = PublishForm(request.form)
     form.topic.choices = [(topic.name, topic.name) for topic in Topic.query.all()]
+    message = {
+        'title': form.title.data,
+        'number': form.number.data,
+        'subject': form.subject.data,
+        'publisher': form.publisher.data,
+        'content': form.content.data
+    }
     if request.method == 'POST' and form.validate():
         with stream.open(f'kafka://{KAFKA_HOST}:{KAFKA_PORT}/{form.topic.data}', 'w', format='json') as s:
-            s.write({'content': form.content.data})
+            s.write(message)
         return redirect(url_for('.list_messages'))
     return render_template('publish_form.html', form=form)
 
@@ -102,4 +110,3 @@ def get_message(msg_id):
     }
 
     return render_template('message_detail.html', context=context)
-
