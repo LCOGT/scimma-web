@@ -1,24 +1,7 @@
-from flask import abort, Blueprint, redirect, render_template, request, url_for
+from flask import abort, Blueprint
 
-from scimma.client import stream
-
-from client import ScimmaClientWrapper
-# from extensions import db
-from forms import CreateTopicForm, PublishForm
 from models import Message, Topic
 
-
-KAFKA_HOST = 'localhost'
-# KAFKA_HOST = 'firkraag.lco.gtn'
-KAFKA_PORT = '9092'
-
-kafka_config = {
-    'bootstrap.servers': f'{KAFKA_HOST}:{KAFKA_PORT}',
-    'group.id': 'scimma-web-test',
-    'auto.offset.reset': 'earliest'
-}
-
-client_wrapper = ScimmaClientWrapper(**kafka_config)
 
 api_bp = Blueprint('/v1', 'api_v1')
 

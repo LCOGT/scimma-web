@@ -26,7 +26,7 @@ def create_app():
 
 def register_extensions(app):
     from extensions import db, migrate
-    from models import Message, Topic
+    from models import Message, Topic  # All models must be imported here for flask-migrate to pick up migrations
 
     db.init_app(app)
     migrate.init_app(app, db)
@@ -34,9 +34,11 @@ def register_extensions(app):
 
 def register_blueprints(app):
     from routes.api.v1 import api_bp as api_v1
+    from routes.api.v2 import api_bp as api_v2
     from routes.web import web_bp
 
     app.register_blueprint(api_v1, url_prefix='/api')
+    app.register_blueprint(api_v2, url_prefix='/api')
     app.register_blueprint(web_bp, url_prefix='')
 
 
