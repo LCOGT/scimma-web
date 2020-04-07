@@ -33,11 +33,11 @@ def register_extensions(app):
 
 
 def register_blueprints(app):
-    from routes.api import api_bp
+    from routes.api.v1 import api_bp as api_v1
     from routes.web import web_bp
 
-    app.register_blueprint(api_bp)
-    app.register_blueprint(web_bp)
+    app.register_blueprint(api_v1, url_prefix='/api')
+    app.register_blueprint(web_bp, url_prefix='')
 
 
 app = create_app()
