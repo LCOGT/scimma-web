@@ -43,3 +43,9 @@ Because the command includes ``--rm=true``, the container will not persist after
 To start the ingestion script, your Kafka server will first need topics. Topics can be created by exec-ing into the container and running ``kafka-topics``, but the easiest way is to publish a message to the desired topic. The topic will be created automatically. To do so, navigate to ``localhost:5000/message/create`` and publish a message. This will produce a message on your Kafka server's queue.
 
 Following that, you can start your ingestion script by running ``python ingest.py``.
+
+
+# Docker
+
+While there is a functional Dockerfile and a work-in-progress docker-compose, these are considered to be experimental and not 
+guaranteed to work because they rely on local services.
