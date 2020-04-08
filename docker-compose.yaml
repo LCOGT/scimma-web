@@ -1,11 +1,9 @@
 version: '3.0'
 services:
   web:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    build: .
+    entrypoint: ["/usr/local/bin/gunicorn", "app:app", "--bind=0.0.0.0:5000"]
     container_name: scimma-web
-    command: --bind=0.0.0.0:5000 --worker-class=gevent --workers=2 --timeout=300 --access-logfile=- --error-logfile=- 'app:create_app()'
     ports:
       - "5000:5000"
     depends_on:
@@ -13,7 +11,7 @@ services:
   ingest:
     build: .
     container_name: scimma-ingest
-    command: python ingest.py
+    entrypoint: ["python", "ingest.py"]
     depends_on:
       - db
   db:
