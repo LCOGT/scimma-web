@@ -1,4 +1,4 @@
-from wtforms import Form, IntegerField, SelectField, StringField, SubmitField, validators
+from wtforms import Form, IntegerField, SelectField, StringField, SubmitField, validators, widgets
 
 
 class PublishForm(Form):
@@ -6,7 +6,7 @@ class PublishForm(Form):
     number = IntegerField('Message number')
     subject = StringField('Message subject', [validators.Length(max=80)])
     publisher = StringField('Publisher name', [validators.Length(max=80)])
-    content = StringField('Message content', [validators.Length(max=1024)])
+    content = StringField('Message content', [validators.Length(max=1024)], widget=widgets.TextArea())
     topic = SelectField('SCiMMA Topic', choices=[('gcn', 'GCN')])
     submit = SubmitField()
 
